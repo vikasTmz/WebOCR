@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="robots" content="index, follow"/>
+    <meta name="description" content="Extract text from images with this online OCR tool."/>
+    <meta name="content-language" content="en"/>
+
+    <link rel="stylesheet" href="./ocr_style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Julius+Sans+One">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lobster">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lobster+Two">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Indie Flower">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Monoton">
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="./Tesseract.js"></script>
+
+
+    <!-- <link rel="alternate" href="http://www.free-ocr.com/de.html" hreflang="de"/> -->
+
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <meta name="keywords" content="free,online,ocr,text,recognition,extract,image,upload" >
+
+    <title>Online OCR</title>
+</head>
+
+<body class="home">
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-906933-8', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+    <div id="wrap">
+        <div id="header">
+            <div id="logo">
+                <a href="http://web.iiit.ac.in/~vikas.thamizharasan/OCR_web.html" >
+                    <img alt="Online OCR" src=""/>
+                </a>
+            </div>
+        </div>
+        <div id="nav">
+            <div id="langmenu">
+                <ul><li><span class="active">en</span></li></ul>
+
+                <select onChange="window.location.replace(this.options[this.selectedIndex].value)">  <option selected value="/">en</option></select>
+            </div>
+            <div id="pagenav"> <ul> <li class="navitem active"><a href="http://web.iiit.ac.in/~vikas.thamizharasan/OCR_web.html">Home</a></li>  <!-- <li class="navitem "><a href="/about.html">About</a></li>  --> </ul> <select onchange="window.location.replace(this.options[this.selectedIndex].value)"> <option selected value="/">Home</option>  <!-- <option  value="/about.html">About</option>    --> </select> </div> </div><div id="gc-rightcol" class="gc-wrap"><!-- A_Free-OCR.com -->
+
+            <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-1877367226929917"
+            data-ad-slot="3747356720"
+            data-ad-format="vertical"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+        </div>
+        <div id="content" class="with-rightcol">
+            <div id="gc-welcome" class="gc-wrap">
+                <ins class="adsbygoogle" data-ad-client="ca-pub-1877367226929917" data-ad-slot="3419849124" data-ad-format="rectangle"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            <div id="explain">
+             Upload either a .jpg, .png below.<br>
+             <output id="list"></output>
+         </div>
+
+         <br>
+         <form enctype="multipart/form-data" action="/" method="post" name="fo" id="appform" >
+            <div class="ff ">
+                <div class="ff-multifield">
+                    <label for="fileupfield"><h3>Upload a file:</h3></label>
+
+                    <input  type="file" id="fileupfield" name="files[]" class="ff-filefield-input "  />
+
+                    <button type="button" class="hidden clear-filefield-button" data-fieldid="fileupfield" >
+                        <img width="16" height="16" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6M0ZDMjU2RUQzODlEMTFFMkI3QjlENDM1OEY4NUQzRjQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6M0ZDMjU2RUUzODlEMTFFMkI3QjlENDM1OEY4NUQzRjQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozRkMyNTZFQjM4OUQxMUUyQjdCOUQ0MzU4Rjg1RDNGNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozRkMyNTZFQzM4OUQxMUUyQjdCOUQ0MzU4Rjg1RDNGNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ps4RC+wAAACQSURBVHjaYvz//z9Deno6AxrwA+L5QCwE5b8D4kQg3oSsaObMmQxMDNjBNCAOAmJGKA6CimEAZAMOAPF/KJZG4x+AiiHzMQywZyAewNWyIAkyMpABWND4/4nUx4jNC2QBfAZI4mATbcALHGyiDaDYC8PAAEscbLwGIIf2MRzsF/gMiAPiO3hcdQeqBg4AAgwAC9Ad5rWci1IAAAAASUVORK5CYII=" id="ocr" />
+                    </button>
+
+
+                </div>
+                <div class="ff-multifield">
+                    <label for="fileupfield-url"><h3>URL:</h3>(facing security issues)</label> 
+                    <input name="userfile_url" type="text" id="fileupfield-url" class="width-input ff-inputfield " />
+                    <button type="button" id="myBtn" onclick="ocrImage()">Load Image</button>
+                </div>
+                <div class="fieldhint">Note:</div>
+                <input type="hidden" name="requiredfile_userfile" value="1" />
+            </div>
+            <div class="ff checkboxlist">
+                <label >Language:<br></label>
+                <div class="fieldhint"></div>
+                <div id="language-checkboxlist" class="checkboxlist-wrap">
+                    <div class="checkbox-list-item">
+                        <input checked type="checkbox" name="language[]" value="eng"/> English</div>
+
+                        <div class="checkbox-list-item">
+                            <input  type="checkbox" name="language[]" value="fra"/> French</div>
+
+                        </div>
+
+                        <div class="ff">
+                            <!-- <input type="submit" value="Start" name="submit" id="fbut" class="button"/><br/> -->
+                        </div>
+                    </form>
+                </div>
+                <div id="display"></div></br></br></br>
+                <a download="output.txt" id="downloadlink" style="display: none">Download as txt file</a>
+
+                <div id="footer">
+                    <div id="gc-footer" class="gc-wrap"><ins class="adsbygoogle" data-ad-client="ca-pub-1877367226929917" data-ad-slot="6373315527" data-ad-format="rectangle, horizontal"></ins>
+                        <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </div> 
+                <script>
+
+                var img = new Image();
+                var i=0 , output;
+                var textFile = null;
+                function handleDragOver(evt) {
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+                
+            }
+
+            Element.prototype.remove = function() {
+                this.parentElement.removeChild(this);
+            }
+
+            NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+                for(var i = this.length - 1; i >= 0; i--) {
+                    if(this[i] && this[i].parentElement) {
+                        this[i].parentElement.removeChild(this[i]);
+                    }
+                }
+            }
+
+
+            function ocrImage(){
+                if(document.getElementById('span') != null)  
+                    document.getElementById('span').remove();
+
+                var span = document.createElement('span');
+
+                span.innerHTML = ['<img id="thumb',i,'" width ="200" height ="100" src="', document.getElementById('fileupfield-url').value,
+                '" "/>'].join('');
+                document.getElementById('list').insertBefore(span, null);
+
+                img.src = "http://www.popsci.com/sites/popsci.com/files/styles/large_1x_/public/new-google-logo.jpg?itok=ZdIobGek";//document.getElementById('thumb' +i).src;                
+            }
+
+
+            function makeTextFile(text) {
+              var data = new Blob([text], {type: 'text/plain'});
+
+                    // If we are replacing a previously generated file we need to
+                    // manually revoke the object URL to avoid memory leaks.
+                    if (textFile !== null) {
+                      window.URL.revokeObjectURL(textFile);
+                  }
+
+                  textFile = window.URL.createObjectURL(data);
+
+                  return textFile;
+              };
+
+              function handleFileSelect(evt) {
+                    var files = evt.target.files; // FileList object
+
+                    // Loop through the FileList and render image files as thumbnails.
+                    f = files[files.length-1];
+                      // Only process image files.
+                      if (!f.type.match('image.*')) {
+                        return;
+                    }
+
+                    var reader = new FileReader();
+
+                      // Closure to capture the file information.
+                      reader.onload = (function(theFile) {
+                        return function(e) {
+                          // Render thumbnail.
+                          if(document.getElementById('span') != null)  
+                            document.getElementById('span').remove();
+
+                        var span = document.createElement('span');
+
+                        // var span = document.getElementById('span');
+
+                        span.innerHTML = ['<img id="thumb',i,'" width ="200" height ="100" src="', e.target.result,
+                        '" title="', escape(theFile.name), '"/>'].join('');
+
+                        document.getElementById('list').insertBefore(span, null);
+                          // console.log(e.target.result);
+                          img.src = document.getElementById('thumb' +i).src;
+
+
+                      };
+                  })(f);
+
+                      // Read in the image file as a data URL.
+                      reader.readAsDataURL(f);
+                      i++;
+
+                  }
+
+                  img.onload = function() {
+                    Tesseract.recognize(img,{
+                        progress: function(e){
+                            document.getElementById('display').innerHTML = '<h2>' + "Loading..." + '</h2>';
+                        // console.log(e)
+                    }
+                }).then( function(d){
+                    document.getElementById('display').innerHTML = '<h2>' + "Result" + '</h2>';
+                    output = "";
+                    document.getElementById('display').innerHTML +=d.text;
+                    output += d.text;
+                })
+            }
+
+            document.getElementById('fileupfield').addEventListener('change', handleFileSelect, false);
+            // document.getElementById('fileupfield-url').addEventListener('change', ocrImage, false);
+
+            document.addEventListener('click', function () {
+                var link = document.getElementById('downloadlink');
+                link.href = makeTextFile(output);
+                link.style.display = 'block';
+            }, false);
+                  // var dropZone = document.getElementById('drop_zone');
+                  // dropZone.addEventListener('dragover', handleDragOver, false);
+                  // dropZone.addEventListener('drop', handleFileSelect, false);
+
+                  </script>
+
+              </div>
+          </body>
+          </html> 
